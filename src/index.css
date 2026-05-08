@@ -1,0 +1,127 @@
+/* Google Fonts loaded via index.html */
+
+/* ── Theme tokens ── */
+:root {
+  --bg: #fcfbfb;
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --surface: #fafafa;
+  --border: #e5e7eb;
+  --accent: #b10125;
+  --accent-hover: #8b0000;
+
+  /* existing editor tokens */
+  --color-background-primary: #fcfbfb;
+  --color-background-secondary: #f9fafb;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+  --color-border-secondary: #d1d5db;
+  --color-border-tertiary: #e5e7eb;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --color-text-danger: #dc2626;
+
+  /* setup screen state tokens */
+  --setup-selected-bg: #f0f0f0;
+  --setup-selected-border: #c0c0c0;
+  --setup-selected-text: #b10125;
+  --setup-unselected-bg: #fcfbfb;
+  --setup-unselected-border: #e5e7eb;
+  --setup-secondary-text: #6b7280;
+  --setup-disabled-bg: transparent;
+  --setup-disabled-text: #9ca3af;
+  --info-border: #d1d5db;
+  --info-tooltip-bg: #ffffff;
+  --info-tooltip-color: #4b5563;
+  --info-tooltip-border: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text: #f5f5f5;
+  --text-muted: #b0b7c2;
+  --surface: #1a1a1a;
+  --border: #444444;                 /* raised from #363636 — more visible panel borders */
+
+  --color-background-primary: #202020;   /* raised from #161616 — inputs/cards lift off page */
+  --color-background-secondary: #2a2a2a; /* raised from #1e1e1e — secondary panels lift off primary */
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #b0b7c2;
+  --color-text-tertiary: #9ca3af;
+  --color-border-secondary: #444444;     /* raised from #363636 — more visible borders */
+  --color-border-tertiary: #363636;      /* raised from #2a2a2a */
+
+  /* setup screen state tokens — subtle fill highlight for dark mode */
+  --setup-selected-bg: #2c2c2c;
+  --setup-selected-border: #505050;
+  --setup-selected-text: #f87171;
+  --setup-unselected-bg: #202020;
+  --setup-unselected-border: #444444;
+  --setup-secondary-text: #6b7280;
+  --setup-disabled-bg: #2a2a2a;
+  --setup-disabled-text: #9ca3af;
+  --info-border: #555555;
+  --info-tooltip-bg: #2a2a2a;
+  --info-tooltip-color: #b0b7c2;
+  --info-tooltip-border: #444444;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ── Focus rings ── */
+*:focus-visible {
+  outline: 2px solid #b10125;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Editor root (only when editor is active) ── */
+#root.editor-active {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2rem 0.75rem;
+}
+
+/* Wordmark now uses separate dark PNG — no filter needed */
+
+/* ── Logo mark ── */
+.app-logo-wrap {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.app-logo {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .app-logo-wrap {
+    max-width: 300px;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
