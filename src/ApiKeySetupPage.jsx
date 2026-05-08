@@ -64,16 +64,17 @@ export default function ApiKeySetupPage({ navigate, theme, setTheme }) {
 
         {/* Heading */}
         <h1 style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(24px, 5vw, 34px)", fontWeight: 400, margin: "0 0 16px", textAlign: "center", lineHeight: 1.2, color: "var(--text)" }}>
-          One quick step before you begin
+          Connect your Anthropic API key
         </h1>
 
         {/* Subheading */}
         <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.65, margin: "0 0 36px", textAlign: "center" }}>
-          Firstread runs on the Anthropic API — which means your writing goes directly to Anthropic and is never stored by us. You'll need a free API key to get started.
+          Firstread runs on the Anthropic API — your writing goes directly to Anthropic and is never stored by us. If you already have a key, paste it below. If not, follow the steps to create one in about two minutes.
         </p>
 
         {/* Steps box */}
         <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "20px 24px", marginBottom: 12, background: "var(--surface)" }}>
+          <p style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Don't have a key yet?</p>
           <ol style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: 10 }}>
             <li style={{ fontSize: 15, color: "var(--text)", lineHeight: 1.55 }}>
               Create a free account at{" "}
@@ -87,7 +88,7 @@ export default function ApiKeySetupPage({ navigate, theme, setTheme }) {
 
         {/* Cost note */}
         <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 28px", lineHeight: 1.5 }}>
-          Anthropic's API is pay-as-you-go. A typical Firstread session costs less than $0.01. You can set a monthly spending limit in your Anthropic console.
+          New accounts receive ~$5 in free trial credits. After that, Anthropic's API is pay-as-you-go — a typical Firstread session costs less than $0.01. You can set a spending limit in your Anthropic console.
         </p>
 
         {/* Input */}
