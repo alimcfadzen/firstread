@@ -68,8 +68,11 @@ export default function ApiKeySetupPage({ navigate, theme, setTheme }) {
         </h1>
 
         {/* Subheading */}
+        <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.65, margin: "0 0 12px", textAlign: "center" }}>
+          Firstread runs on the Anthropic API — your writing goes directly to Anthropic and is never stored by us.
+        </p>
         <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.65, margin: "0 0 36px", textAlign: "center" }}>
-          Firstread runs on the Anthropic API — your writing goes directly to Anthropic and is never stored by us. If you already have a key, paste it below. If not, follow the steps to create one in about two minutes.
+          Already have a key? Enter it below. Need to sign up? Follow the steps to get one in about two minutes.
         </p>
 
         {/* Steps box */}
