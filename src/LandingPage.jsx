@@ -311,7 +311,7 @@ export default function LandingPage({ theme, setTheme, navigate }) {
           onClick={() => navigate(hasKey ? "app" : "setup")}
           style={{ padding: "7px 18px", fontSize: 12 }}
         >
-          {hasKey ? "Continue to editor →" : "Get started →"}
+          Continue to editor →
         </PrimaryButton>
       </div>
 
