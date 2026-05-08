@@ -13,9 +13,11 @@ export default function Router() {
   });
 
   const [page, setPage] = useState(() => {
-    const hash = window.location.hash;
-    if (hash === "#privacy") return "privacy";
-    if (hash === "#terms") return "terms";
+    const hash = window.location.hash.slice(1);
+    if (hash === "app") return localStorage.getItem("story_editor_api_key") ? "app" : "landing";
+    if (hash === "setup") return "setup";
+    if (hash === "privacy") return "privacy";
+    if (hash === "terms") return "terms";
     return "landing";
   });
 
@@ -35,9 +37,7 @@ export default function Router() {
 
   const navigate = (target) => {
     setPage(target);
-    if (target === "privacy") window.location.hash = "privacy";
-    else if (target === "terms") window.location.hash = "terms";
-    else window.location.hash = "";
+    window.location.hash = target === "landing" ? "" : target;
     window.scrollTo(0, 0);
   };
 
