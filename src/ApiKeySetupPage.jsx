@@ -48,7 +48,7 @@ export default function ApiKeySetupPage({ navigate, theme, setTheme }) {
       justifyContent: "center",
       padding: "40px 24px",
     }}>
-      <div style={{ width: "100%", maxWidth: 480 }}>
+      <div style={{ width: "100%", maxWidth: 680 }}>
 
         {/* Logo */}
         <div style={{ marginBottom: 36 }}>
