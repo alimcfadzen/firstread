@@ -484,7 +484,66 @@ export default function LandingPage({ theme, setTheme, navigate }) {
         </div>
       </section>
 
-      {/* ── SECTION 6: Privacy ── */}
+      {/* ── SECTION 6: API key ── */}
+      <section id="api-key" aria-labelledby="api-heading" style={{ maxWidth: 1120, margin: "0 auto", padding: "80px 24px" }}>
+        <h2 id="api-heading" style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 400, margin: "0 0 16px", color: "var(--text)", textAlign: "center" }}>
+          You bring the key, we bring the editor
+        </h2>
+        <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 580, lineHeight: 1.65, margin: "0 auto 56px", textAlign: "center" }}>
+          Firstread runs on Anthropic's API. You'll need a free API key — it takes about two minutes to set up, and most sessions cost less than a cent.
+        </p>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24, marginBottom: 56 }}>
+          {[
+            {
+              step: "01",
+              title: "Create a free account",
+              desc: "Sign up at console.anthropic.com — no credit card required to get started.",
+            },
+            {
+              step: "02",
+              title: "Generate an API key",
+              desc: "Click API Keys in the sidebar, create a key, and copy it. The whole process takes under two minutes.",
+            },
+            {
+              step: "03",
+              title: "Paste it into Firstread",
+              desc: "Your key is saved in your browser only. It goes directly to Anthropic — we never see it.",
+            },
+          ].map(({ step, title, desc }) => (
+            <div key={step} style={{ border: "1px solid var(--border)", borderRadius: 12, padding: "28px 24px", background: theme === "dark" ? "#1e1e1e" : "#ffffff", textAlign: "center" }}>
+              <span style={{ fontFamily: "'DM Serif Display', serif", fontSize: 32, color: ACCENT, lineHeight: 1, display: "block", marginBottom: 12 }}>{step}</span>
+              <h3 style={{ margin: "0 0 10px", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>{title}</h3>
+              <p style={{ margin: 0, fontSize: 15, color: "var(--text-muted)", lineHeight: 1.65 }}>{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ background: theme === "dark" ? "#1e1e1e" : "#ffffff", border: "1px solid var(--border)", borderRadius: 12, padding: "32px 40px", maxWidth: 720, margin: "0 auto" }}>
+          <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: 24, fontWeight: 400, margin: "0 0 24px", color: "var(--text)", textAlign: "center" }}>What does it cost?</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 24 }}>
+            {[
+              { label: "Typical session", value: "< $0.01", note: "A few hundred words of prose with full feedback" },
+              { label: "Heavy use day", value: "~$0.05–0.10", note: "Multiple long excerpts with follow-up questions" },
+              { label: "Monthly estimate", value: "$1–3", note: "For regular daily use — similar to a coffee" },
+              { label: "Billing", value: "Pay-as-you-go", note: "No subscription. You're charged only for what you use." },
+            ].map(({ label, value, note }) => (
+              <div key={label} style={{ borderLeft: `3px solid ${ACCENT}`, paddingLeft: 16 }}>
+                <p style={{ margin: "0 0 2px", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)" }}>{label}</p>
+                <p style={{ margin: "0 0 4px", fontSize: 20, fontWeight: 600, color: "var(--text)", fontFamily: "'DM Serif Display', serif" }}>{value}</p>
+                <p style={{ margin: 0, fontSize: 13, color: "var(--text-muted)", lineHeight: 1.5 }}>{note}</p>
+              </div>
+            ))}
+          </div>
+          <p style={{ margin: 0, fontSize: 13, color: "var(--text-muted)", textAlign: "center", borderTop: "1px solid var(--border)", paddingTop: 20, lineHeight: 1.6 }}>
+            You can set a monthly spending cap in your{" "}
+            <a href="https://console.anthropic.com" target="_blank" rel="noreferrer" style={{ color: ACCENT }}>Anthropic console</a>
+            {" "}so there are no surprises. Firstread has no subscription fee of its own.
+          </p>
+        </div>
+      </section>
+
+      {/* ── SECTION 7: Privacy ── */}
       <section id="privacy-section" aria-labelledby="privacy-heading" style={{ maxWidth: 1120, margin: "0 auto", padding: "80px 24px" }}>
         <h2 id="privacy-heading" style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 400, margin: "0 0 20px", color: "var(--text)", textAlign: "center" }}>
           Your writing stays yours
