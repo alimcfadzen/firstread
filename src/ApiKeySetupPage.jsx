@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logoCircle from "./assets/firstread logo circle.png";
+import logoCircle from "./assets/firstread logo circle small.png";
 
 const ACCENT = "#b10125";
 const ACCENT_HOVER = "#8b0000";

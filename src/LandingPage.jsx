@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import logoCircle from "./assets/firstread logo circle.png";
+import logoCircle from "./assets/firstread logo circle small.png";
 import wordmarkBlack from "./assets/firstread wordmark black.png";
 import wordmarkWhite from "./assets/firstread wordmark white.png";
 
