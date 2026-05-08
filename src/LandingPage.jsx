@@ -548,7 +548,8 @@ export default function LandingPage({ theme, setTheme, navigate }) {
       </section>
 
       {/* ── SECTION 7: Privacy ── */}
-      <section id="privacy-section" aria-labelledby="privacy-heading" style={{ maxWidth: 1120, margin: "0 auto", padding: "80px 24px", borderTop: "1px solid var(--border)" }}>
+      <section id="privacy-section" aria-labelledby="privacy-heading" style={{ background: theme === "dark" ? darkAltBg : "var(--surface)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "80px 24px" }}>
         <h2 id="privacy-heading" style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 400, margin: "0 0 20px", color: "var(--text)", textAlign: "center" }}>
           Your writing stays yours
         </h2>
@@ -567,6 +568,7 @@ export default function LandingPage({ theme, setTheme, navigate }) {
           For information on how Anthropic handles data, see their{" "}
           <a href="https://www.anthropic.com/privacy" target="_blank" rel="noreferrer" style={{ color: ACCENT }}>privacy policy</a>.
         </p>
+      </div>
       </section>
 
       {/* ── Footer ── */}
