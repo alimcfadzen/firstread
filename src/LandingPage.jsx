@@ -489,8 +489,8 @@ export default function LandingPage({ theme, setTheme, navigate }) {
         <h2 id="api-heading" style={{ fontFamily: "'DM Serif Display', serif", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 400, margin: "0 0 16px", color: "var(--text)", textAlign: "center" }}>
           You bring the key, we bring the editor
         </h2>
-        <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 580, lineHeight: 1.65, margin: "0 auto 56px", textAlign: "center" }}>
-          Firstread runs on Anthropic's API. You'll need a free API key — it takes about two minutes to set up, and most sessions cost less than a cent.
+        <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 600, lineHeight: 1.65, margin: "0 auto 56px", textAlign: "center" }}>
+          You'll need a free Anthropic API key — it takes about two minutes to set up. New accounts receive roughly $5 in free trial credits, which goes a long way at less than a cent per session. Once those run out, you can add credits whenever you need them.
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24, marginBottom: 56 }}>
