@@ -304,15 +304,24 @@ export default function LandingPage({ theme, setTheme, navigate }) {
   return (
     <div style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh", fontFamily: "'Inter', sans-serif" }}>
 
-      {/* ── Welcome back banner ── */}
-      {hasKey && (
-        <div role="banner" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 16 }}>
-          <span style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>Welcome back!</span>
-          <PrimaryButton onClick={() => navigate("app")} style={{ padding: "7px 18px", fontSize: 12 }}>
-            Continue to editor →
-          </PrimaryButton>
-        </div>
-      )}
+      {/* ── Welcome banner ── */}
+      <div role="banner" style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 16 }}>
+        {hasKey ? (
+          <>
+            <span style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>Welcome back!</span>
+            <PrimaryButton onClick={() => navigate("app")} style={{ padding: "7px 18px", fontSize: 12 }}>
+              Continue to editor →
+            </PrimaryButton>
+          </>
+        ) : (
+          <>
+            <span style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "'Inter', sans-serif" }}>Get started in two minutes — no subscription required.</span>
+            <PrimaryButton onClick={() => navigate("setup")} style={{ padding: "7px 18px", fontSize: 12 }}>
+              Set up your API key →
+            </PrimaryButton>
+          </>
+        )}
+      </div>
 
       {/* ── Nav ── */}
       <nav
