@@ -1,7 +1,10 @@
+import wordmarkBlack from "./assets/firstread wordmark black.png";
+import wordmarkWhite from "./assets/firstread wordmark white.png";
+
 const ACCENT = "#b10125";
 
 function Wordmark({ height = 26, theme = "light" }) {
-  return <img src={theme === "dark" ? "/firstread-wordmark-dark.png" : "/firstread-wordmark.png"} alt="firstread" style={{ height, width: "auto", display: "block" }} />;
+  return <img src={theme === "dark" ? wordmarkWhite : wordmarkBlack} alt="firstread" style={{ height, width: "auto", display: "block" }} />;
 }
 
 export default function PrivacyPage({ navigate, theme, setTheme }) {

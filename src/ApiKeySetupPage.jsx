@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logoCircle from "./assets/firstread logo circle.png";
 
 const ACCENT = "#b10125";
 const ACCENT_HOVER = "#8b0000";
@@ -52,7 +53,7 @@ export default function ApiKeySetupPage({ navigate, theme, setTheme }) {
         {/* Logo */}
         <div style={{ marginBottom: 36 }}>
           <div className="app-logo-wrap">
-            <img src={theme === "dark" ? "/firstread-logo-dark.png" : "/firstread-logo.png"} alt="Firstread" className="app-logo" />
+            <img src={logoCircle} alt="Firstread" className="app-logo" />
           </div>
         </div>
 

@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import logoCircle from "./assets/firstread logo circle.png";
+import wordmarkBlack from "./assets/firstread wordmark black.png";
+import wordmarkWhite from "./assets/firstread wordmark white.png";
 
 // ── Brand tokens ──────────────────────────────────────────────
 const ACCENT = "#b10125";
@@ -8,7 +11,7 @@ const ACCENT_HOVER = "#8b0000";
 function Wordmark({ height = 28, theme = "light" }) {
   return (
     <img
-      src={theme === "dark" ? "/firstread-wordmark-dark.png" : "/firstread-wordmark.png"}
+      src={theme === "dark" ? wordmarkWhite : wordmarkBlack}
       alt="firstread"
       style={{ height, width: "auto", display: "block" }}
     />
@@ -372,7 +375,7 @@ export default function LandingPage({ theme, setTheme, navigate }) {
         {/* Logo */}
         <div style={{ marginBottom: 8 }}>
           <div className="app-logo-wrap">
-            <img src={theme === "dark" ? "/firstread-logo-dark.png" : "/firstread-logo.png"} alt="Firstread" className="app-logo" />
+            <img src={logoCircle} alt="Firstread" className="app-logo" />
           </div>
         </div>
 
