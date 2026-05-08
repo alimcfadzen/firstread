@@ -5,6 +5,15 @@ import PrivacyPage from "./PrivacyPage.jsx";
 import TermsPage from "./TermsPage.jsx";
 import App from "./App.jsx";
 
+function pageFromHash() {
+  const hash = window.location.hash.slice(1);
+  if (hash === "app") return localStorage.getItem("story_editor_api_key") ? "app" : "landing";
+  if (hash === "setup") return "setup";
+  if (hash === "privacy") return "privacy";
+  if (hash === "terms") return "terms";
+  return "landing";
+}
+
 export default function Router() {
   const [theme, setTheme] = useState(() => {
     const stored = localStorage.getItem("firstread_theme");
@@ -12,14 +21,13 @@ export default function Router() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
-  const [page, setPage] = useState(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash === "app") return localStorage.getItem("story_editor_api_key") ? "app" : "landing";
-    if (hash === "setup") return "setup";
-    if (hash === "privacy") return "privacy";
-    if (hash === "terms") return "terms";
-    return "landing";
-  });
+  const [page, setPage] = useState(pageFromHash);
+
+  useEffect(() => {
+    const onHashChange = () => setPage(pageFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
