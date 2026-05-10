@@ -1230,7 +1230,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
               <>
                 <button
                   onClick={() => { if (!genreDisabled) { setGenreMode("discover"); setGenre(null); setSubgenre(null); } }}
-                  style={{ marginBottom: 10, padding: "8px 14px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: "1px solid var(--setup-unselected-border)", background: "var(--setup-unselected-bg)", color: "var(--color-text-primary)", cursor: genreDisabled ? "not-allowed" : "pointer", fontFamily: "inherit", opacity: genreDisabled ? 0.4 : 1 }}>
+                  style={{ marginBottom: 10, padding: "8px 14px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: "2px solid var(--setup-selected-border)", background: "var(--setup-unselected-bg)", color: "var(--color-text-primary)", cursor: genreDisabled ? "not-allowed" : "pointer", fontFamily: "inherit", opacity: genreDisabled ? 0.4 : 1 }}>
                   Help me find my genre →
                 </button>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5, marginBottom: "1.5rem", opacity: genreDisabled ? 0.4 : 1 }}>
