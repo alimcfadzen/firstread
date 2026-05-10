@@ -425,9 +425,11 @@ const INTENSITIES = [
   { key: "high",   label: "Rigorous", desc: "Unsparing and thorough. Every significant weakness named and examined — including subtle craft issues others might let pass. Best for near-final drafts or writers who want to be challenged." },
 ];
 
-function buildSystemPrompt(contentType, genre, subgenre, audience, intensity, feedbackScope = "all") {
+function buildSystemPrompt(contentType, genre, subgenre, audience, intensity, feedbackScope = "all", pov = null, tense = null) {
   const audienceObj = AUDIENCES.find(a => a.key === audience);
   const subgenreNote = subgenre ? ` The work is specifically ${subgenre} — apply subgenre conventions accordingly.` : "";
+  const povNote = pov ? ` Written in ${{ first: "first", second: "second", third: "third" }[pov]}-person — flag any perspective violations.` : "";
+  const tenseNote = tense ? ` Written in ${tense} tense — flag any tense inconsistencies.` : "";
   const audienceGuide = !audience
     ? "Audience: not specified. Evaluate for general adult readability and craft."
     : audience === "unsure"
@@ -452,7 +454,7 @@ function buildSystemPrompt(contentType, genre, subgenre, audience, intensity, fe
     const prescriptiveNote = prescriptiveGenres.includes(genre)
       ? "\nFor prescriptive non-fiction additionally: Is the central argument clear? Is evidence used effectively? Is advice actionable and specific?"
       : "";
-    return `You are a professional non-fiction editor specialising in ${genre}.${subgenreNote}
+    return `You are a professional non-fiction editor specialising in ${genre}.${subgenreNote}${povNote}${tenseNote}
 ${audienceGuide}
 ${toneGuide}${scopeInstruction}
 
@@ -479,7 +481,7 @@ Rules:
 - Return ONLY the JSON object. No markdown, no backticks, no preamble.`;
   }
 
-  return `You are a professional literary editor specialising in ${genre} fiction.${subgenreNote}
+  return `You are a professional literary editor specialising in ${genre} fiction.${subgenreNote}${povNote}${tenseNote}
 ${audienceGuide}
 ${toneGuide}${scopeInstruction}
 
@@ -958,6 +960,8 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   const [ready, setReady] = useState(false);
   const [text, setText] = useState("");
   const [textViewMode, setTextViewMode] = useState("edit");
+  const [pov, setPov] = useState(null);
+  const [tense, setTense] = useState(null);
   const [context, setContext] = useState("");
   const [showContext, setShowContext] = useState(false);
   const [tab, setTab] = useState(0);
@@ -1082,7 +1086,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
           max_tokens: 4096,
-          system: buildSystemPrompt(contentType, genre, subgenre, audience, intensity, feedbackScope),
+          system: buildSystemPrompt(contentType, genre, subgenre, audience, intensity, feedbackScope, pov, tense),
           messages: [{ role: "user", content: userMsg }]
         })
       });
@@ -1317,6 +1321,36 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             </div>
           )}
 
+          {genre && (
+            <div style={{ marginBottom: "1.5rem", padding: "10px 12px", borderRadius: "var(--border-radius-md)", background: "var(--color-background-secondary)", border: "1px solid #d1d5db" }}>
+              <p style={{ fontSize: 14, fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 10px" }}>
+                Narrative <span style={{ fontWeight: 400, fontSize: 12, color: "var(--color-text-secondary)" }}>— not required, but helps the editor direct their feedback</span>
+              </p>
+              <div style={{ marginBottom: 8 }}>
+                <span style={{ fontSize: 12, color: "var(--color-text-tertiary)", display: "block", marginBottom: 5 }}>Point of view</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {[["first", "1st Person"], ["second", "2nd Person"], ["third", "3rd Person"]].map(([key, label]) => (
+                    <button key={key} onClick={() => setPov(pov === key ? null : key)}
+                      style={{ padding: "3px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: pov === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: pov === key ? "var(--setup-selected-bg)" : "transparent", color: pov === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", cursor: "pointer", fontWeight: pov === key ? 600 : 400, fontFamily: "inherit" }}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <span style={{ fontSize: 12, color: "var(--color-text-tertiary)", display: "block", marginBottom: 5 }}>Tense</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {[["past", "Past Tense"], ["present", "Present Tense"], ["future", "Future Tense"]].map(([key, label]) => (
+                    <button key={key} onClick={() => setTense(tense === key ? null : key)}
+                      style={{ padding: "3px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: tense === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: tense === key ? "var(--setup-selected-bg)" : "transparent", color: tense === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", cursor: "pointer", fontWeight: tense === key ? 600 : 400, fontFamily: "inherit" }}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <button onClick={() => { if (genre) { history.pushState({ appPage: 'setup2' }, ''); setSetupPage(2); } }} disabled={!genre}
               style={{ padding: "9px 28px", fontSize: 15, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", borderRadius: "var(--border-radius-md)", border: genre ? "2px solid #b10125" : "1px solid var(--setup-unselected-border)", background: genre ? "#b10125" : "var(--setup-disabled-bg)", color: genre ? "#ffffff" : "var(--setup-disabled-text)", cursor: genre ? "pointer" : "not-allowed", fontFamily: "inherit" }}>
@@ -1410,6 +1444,8 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             { label: "Audience",  value: selectedAudience?.label },
             { label: "Genre",     value: genre },
             subgenre ? { label: "Subgenre",  value: subgenre } : null,
+            pov ? { label: "POV", value: { first: "1st Person", second: "2nd Person", third: "3rd Person" }[pov] } : null,
+            tense ? { label: "Tense", value: { past: "Past", present: "Present", future: "Future" }[tense] } : null,
             { label: "Intensity", value: selectedIntensity?.label },
             { label: "Focus",     value: scopeLabel },
           ].filter(Boolean).map(({ label, value }) => (
@@ -1419,7 +1455,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             </div>
           ))}
         </div>
-        <button onClick={() => { setReady(false); setFeedback(null); setContentType(null); setGenre(null); setSubgenre(null); setAudience(null); setIntensity(null); setFeedbackScope("all"); setText(""); setGenreMode("pick"); setSetupPage(1); }}
+        <button onClick={() => history.back()}
           style={{ fontSize: 12, color: "var(--color-text-secondary)", background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-secondary)", borderRadius: "var(--border-radius-md)", cursor: "pointer", padding: "6px 12px", marginTop: 8, display: "inline-block" }}>
           ← Change selections
         </button>
