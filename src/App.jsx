@@ -660,13 +660,16 @@ function SubgenrePills({ subgenres, subgenre, setSubgenre }) {
         {sorted.map(name => {
           const desc = SUBGENRE_DESCS[name];
           return (
-            <Tip key={name} text={desc} width={210}>
-              <button
-                onClick={() => setSubgenre(subgenre === name ? null : name)}
-                style={{ padding: "3px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: subgenre === name ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: subgenre === name ? "var(--setup-selected-bg)" : "transparent", color: subgenre === name ? "var(--setup-selected-text)" : "var(--color-text-primary)", cursor: "pointer", fontWeight: subgenre === name ? 600 : 400 }}>
-                {name}
-              </button>
-            </Tip>
+            <button key={name}
+              onClick={() => setSubgenre(subgenre === name ? null : name)}
+              style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: subgenre === name ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: subgenre === name ? "var(--setup-selected-bg)" : "transparent", color: subgenre === name ? "var(--setup-selected-text)" : "var(--color-text-primary)", cursor: "pointer", fontWeight: subgenre === name ? 600 : 400 }}>
+              {name}
+              {desc && (
+                <InlineTip text={desc} width={210}>
+                  <span onClick={e => e.stopPropagation()} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", width: 13, height: 13, borderRadius: "50%", border: "1.5px solid currentColor", fontSize: 8, fontStyle: "italic", fontWeight: 700, fontFamily: "serif", cursor: "default", userSelect: "none", lineHeight: 1, opacity: 0.6 }}>i</span>
+                </InlineTip>
+              )}
+            </button>
           );
         })}
       </div>
@@ -1183,13 +1186,14 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
               { key: "fiction",    label: "Fiction",     desc: "Imagined characters, worlds, and events. Includes all genres from fantasy to literary fiction." },
               { key: "nonfiction", label: "Non-Fiction",  desc: "True stories, real people, and factual content. Includes memoir, journalism, history, and more." },
             ].map(({ key, label, desc }) => (
-              <Tip key={key} text={desc} width={240}>
-                <button
-                  onClick={() => setContentType(key)}
-                  style={{ textAlign: "left", padding: "5px 10px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: contentType === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: contentType === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: "pointer" }}>
-                  <span style={{ fontWeight: contentType === key ? 600 : 400, fontSize: contentType === key ? 14 : 13, color: contentType === key ? "var(--setup-selected-text)" : "var(--color-text-primary)" }}>{label}</span>
-                </button>
-              </Tip>
+              <button key={key}
+                onClick={() => setContentType(key)}
+                style={{ display: "flex", alignItems: "center", gap: 6, textAlign: "left", padding: "5px 10px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: contentType === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: contentType === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: "pointer" }}>
+                <span style={{ fontWeight: contentType === key ? 600 : 400, fontSize: contentType === key ? 14 : 13, color: contentType === key ? "var(--setup-selected-text)" : "var(--color-text-primary)" }}>{label}</span>
+                <InlineTip text={desc} width={240}>
+                  <span onClick={e => e.stopPropagation()} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", border: "1.5px solid var(--color-text-tertiary)", fontSize: 9, fontStyle: "italic", fontWeight: 700, fontFamily: "serif", color: "var(--color-text-tertiary)", cursor: "default", userSelect: "none", lineHeight: 1 }}>i</span>
+                </InlineTip>
+              </button>
             ))}
           </div>
 
@@ -1198,13 +1202,18 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             {AUDIENCES.map(({ key, label, ages, desc }) => {
               const disabled = !contentType;
               return (
-                <Tip key={key} text={disabled ? "Select Fiction or Non-Fiction first" : desc} width={240} style={{ flex: 1 }}>
-                  <button onClick={() => !disabled && setAudience(key)}
-                    style={{ width: "100%", textAlign: "left", padding: "5px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: audience === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: audience === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1 }}>
-                    <span style={{ fontWeight: audience === key ? 600 : 400, fontSize: audience === key ? 14 : 13, color: audience === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", display: "block" }}>{label}</span>
-                    {ages && <span style={{ fontSize: 11, color: "var(--setup-secondary-text)", display: "block", marginTop: 1 }}>{ages}</span>}
-                  </button>
-                </Tip>
+                <button key={key} onClick={() => !disabled && setAudience(key)}
+                  style={{ flex: 1, textAlign: "left", padding: "5px 8px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: audience === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: audience === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1 }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 4 }}>
+                    <div>
+                      <span style={{ fontWeight: audience === key ? 600 : 400, fontSize: audience === key ? 14 : 13, color: audience === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", display: "block" }}>{label}</span>
+                      {ages && <span style={{ fontSize: 11, color: "var(--setup-secondary-text)", display: "block", marginTop: 1 }}>{ages}</span>}
+                    </div>
+                    <InlineTip text={disabled ? "Select Fiction or Non-Fiction first" : desc} width={240}>
+                      <span onClick={e => e.stopPropagation()} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", border: "1.5px solid var(--color-text-tertiary)", fontSize: 9, fontStyle: "italic", fontWeight: 700, fontFamily: "serif", color: "var(--color-text-tertiary)", cursor: "default", userSelect: "none", lineHeight: 1, marginTop: 1 }}>i</span>
+                    </InlineTip>
+                  </div>
+                </button>
               );
             })}
           </div>
