@@ -1530,13 +1530,13 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
                 </>
               );
               if (viewMode === "list") {
-                const listLabel = n.quote ? `"${n.quote.length > 60 ? n.quote.slice(0, 60) + "…" : n.quote}"` : `Note ${i + 1}`;
+                const listLabel = n.quote ? `"${n.quote}"` : `Note ${i + 1}`;
                 return (
                   <div key={i} ref={el => noteRefs.current[i] = el}
                     style={{ borderRadius: "var(--border-radius-md)", border: `0.5px solid ${isActive ? color.border : "var(--color-border-tertiary)"}`, overflow: "hidden" }}>
-                    <div onClick={handleNoteClick} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", cursor: "pointer", background: isActive ? color.bg : "var(--color-background-secondary)" }}>
-                      <span style={{ fontSize: 13, color: "var(--color-text-secondary)", fontStyle: n.quote ? "italic" : "normal", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{listLabel}</span>
-                      <span style={{ fontSize: 10, color: "var(--color-text-tertiary)", marginLeft: 8, flexShrink: 0 }}>{isActive ? "▲" : "▼"}</span>
+                    <div onClick={handleNoteClick} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "8px 12px", cursor: "pointer", background: isActive ? color.bg : "var(--color-background-secondary)" }}>
+                      <span style={{ fontSize: 13, color: "var(--color-text-secondary)", fontStyle: n.quote ? "italic" : "normal", flex: 1, lineHeight: 1.5 }}>{listLabel}</span>
+                      <span style={{ fontSize: 10, color: "var(--color-text-tertiary)", marginLeft: 8, flexShrink: 0, marginTop: 2 }}>{isActive ? "▲" : "▼"}</span>
                     </div>
                     {isActive && (
                       <div style={{ padding: "10px 12px", background: "var(--color-background-primary)", borderTop: `0.5px solid ${color.border}` }}>
