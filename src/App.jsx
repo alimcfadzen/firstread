@@ -630,6 +630,24 @@ function Tip({ text, width = 220, style: wrapStyle = {}, children }) {
   );
 }
 
+function InlineTip({ text, width = 220, children }) {
+  const [show, setShow] = useState(false);
+  if (!text) return children;
+  return (
+    <span
+      style={{ position: "relative", display: "inline-block" }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}>
+      {children}
+      {show && (
+        <span style={{ position: "absolute", top: "calc(100% + 4px)", right: 0, zIndex: 50, width, padding: "8px 10px", borderRadius: 8, border: "1px solid var(--info-tooltip-border)", background: "var(--info-tooltip-bg)", fontSize: 12, lineHeight: 1.6, color: "var(--info-tooltip-color)", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", pointerEvents: "none", display: "block", whiteSpace: "normal" }}>
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function SubgenrePills({ subgenres, subgenre, setSubgenre }) {
   if (!subgenres?.length) return null;
   const sorted = [...subgenres].sort((a, b) => a.localeCompare(b));
@@ -935,6 +953,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   const previewRef = useRef(null);
   const feedbackRef = useRef(null);
   const noteRefs = useRef([]);
+  const programmaticScrollRef = useRef(false);
   const [viewMode, setViewMode] = useState("cards");
 
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -974,14 +993,17 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
     if (!mark) return;
     const c = previewRef.current;
     const top = mark.offsetTop;
-    if (top < c.scrollTop || top + mark.offsetHeight > c.scrollTop + c.clientHeight)
+    if (top < c.scrollTop || top + mark.offsetHeight > c.scrollTop + c.clientHeight) {
+      programmaticScrollRef.current = true;
       c.scrollTo({ top: top - c.clientHeight / 2, behavior: "smooth" });
+      setTimeout(() => { programmaticScrollRef.current = false; }, 800);
+    }
   }, [activeNote, tabKey]);
 
   function handleFeedbackScroll() {
-    if (!feedbackRef.current || !feedback) return;
+    if (programmaticScrollRef.current || !feedbackRef.current || !feedback) return;
     const c = feedbackRef.current;
-    const mid = c.scrollTop + 50;
+    const mid = c.scrollTop + c.clientHeight / 2;
     let closest = null; let dist = Infinity;
     noteRefs.current.forEach((el, i) => {
       if (!el) return;
@@ -989,6 +1011,27 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
       if (d < dist) { dist = d; closest = i; }
     });
     if (closest !== null && closest !== activeNote) setActiveNote(closest);
+  }
+
+  function handlePreviewScroll() {
+    if (programmaticScrollRef.current || !previewRef.current || !feedback) return;
+    const c = previewRef.current;
+    const mid = c.scrollTop + c.clientHeight / 2;
+    const marks = c.querySelectorAll("mark[data-note]");
+    let closest = null; let dist = Infinity;
+    marks.forEach(mark => {
+      const noteIdx = parseInt(mark.getAttribute("data-note"));
+      const d = Math.abs(mark.offsetTop + mark.offsetHeight / 2 - mid);
+      if (d < dist) { dist = d; closest = noteIdx; }
+    });
+    if (closest !== null && closest !== activeNote) {
+      setActiveNote(closest);
+      if (noteRefs.current[closest] && feedbackRef.current) {
+        programmaticScrollRef.current = true;
+        feedbackRef.current.scrollTo({ top: noteRefs.current[closest].offsetTop - 16, behavior: "smooth" });
+        setTimeout(() => { programmaticScrollRef.current = false; }, 800);
+      }
+    }
   }
 
   const authHeaders = apiKey === "__claude_ai__"
@@ -1188,15 +1231,15 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
                       const row = displayGenres.slice(i, i + 4);
                       row.forEach(({ key, desc }) => {
                         items.push(
-                          <Tip key={key} text={genreDisabled ? (!contentType ? "Select a type first" : "Select an age range first") : desc} width={220}>
-                            <button onClick={() => { if (genreDisabled) return; genre === key ? (setGenre(null), setSubgenre(null)) : (setGenre(key), setSubgenre(null)); }}
-                              style={{ textAlign: "left", padding: "4px 7px", borderRadius: "var(--border-radius-md)", border: genre === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: genre === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: genreDisabled ? "not-allowed" : "pointer", width: "100%" }}>
-                              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
-                                <span style={{ fontSize: genre === key ? 14 : 13, fontWeight: genre === key ? 600 : 400, color: genre === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", lineHeight: 1.3 }}>{key}</span>
-                                {genre === key && <span style={{ fontSize: 10, color: "var(--setup-secondary-text)", flexShrink: 0 }}>▲</span>}
-                              </div>
-                            </button>
-                          </Tip>
+                          <button key={key} onClick={() => { if (genreDisabled) return; genre === key ? (setGenre(null), setSubgenre(null)) : (setGenre(key), setSubgenre(null)); }}
+                            style={{ textAlign: "left", padding: "4px 7px", borderRadius: "var(--border-radius-md)", border: genre === key ? "2px solid var(--setup-selected-border)" : "1px solid var(--setup-unselected-border)", background: genre === key ? "var(--setup-selected-bg)" : "var(--setup-unselected-bg)", cursor: genreDisabled ? "not-allowed" : "pointer", width: "100%" }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
+                              <span style={{ fontSize: genre === key ? 14 : 13, fontWeight: genre === key ? 600 : 400, color: genre === key ? "var(--setup-selected-text)" : "var(--color-text-primary)", lineHeight: 1.3 }}>{key}</span>
+                              <InlineTip text={genreDisabled ? (!contentType ? "Select a type first" : "Select an age range first") : desc} width={220}>
+                                <span onClick={e => e.stopPropagation()} style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", width: 14, height: 14, borderRadius: "50%", border: "1.5px solid var(--color-text-tertiary)", fontSize: 9, fontStyle: "italic", fontWeight: 700, fontFamily: "serif", color: "var(--color-text-tertiary)", cursor: "default", userSelect: "none", lineHeight: 1 }}>i</span>
+                              </InlineTip>
+                            </div>
+                          </button>
                         );
                       });
                       if (!genreDisabled && row.some(g => g.key === genre)) {
@@ -1349,6 +1392,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             ? <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Write or paste your story excerpt here..."
                 style={{ width: "100%", height: 500, resize: "none", fontSize: 14, lineHeight: 1.75, boxSizing: "border-box", padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-primary)", fontFamily: "var(--font-sans)" }} />
             : <div ref={previewRef} key={tabKey}
+                onScroll={handlePreviewScroll}
                 style={{ height: 500, overflowY: "auto", fontSize: 14, lineHeight: 1.75, padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", wordBreak: "break-word" }}
                 dangerouslySetInnerHTML={buildHighlightedHTML(text, currentNotes, tabKey, theme === "dark")} />
           }
@@ -1471,7 +1515,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             <button onClick={downloadPDF} style={{ position: "absolute", bottom: 8, right: 8, fontSize: 12, fontWeight: 500, color: "#b10125", background: "var(--color-background-primary)", border: "1.5px solid #b10125", borderRadius: "var(--border-radius-md)", cursor: "pointer", padding: "5px 12px", fontFamily: "inherit" }}>Download PDF</button>
           )}
           </div>
-          {feedback && <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "6px 0 0" }}>Scroll notes to sync highlights</p>}
+          {feedback && <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "6px 0 0" }}>Scroll either panel to sync highlights</p>}
         </div>
       </div>
 
