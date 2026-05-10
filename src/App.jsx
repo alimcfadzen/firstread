@@ -1180,7 +1180,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
         <>
           {apiKey === "__claude_ai__" && <ApiKeyBanner onReady={k => setApiKey(k)} />}
 
-          <p style={{ fontSize: 14, fontWeight: 600, margin: "0 0 10px", color: "var(--color-text-primary)" }}>What are you working on?</p>
+          <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 10px", color: "var(--color-text-primary)" }}>What are you working on?</p>
           <div style={{ display: "flex", gap: 8, marginBottom: "1.5rem" }}>
             {[
               { key: "fiction",    label: "Fiction",     desc: "Imagined characters, worlds, and events. Includes all genres from fantasy to literary fiction." },
@@ -1197,7 +1197,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             ))}
           </div>
 
-          <p style={{ fontSize: 14, fontWeight: 600, margin: "0 0 10px", color: "var(--color-text-primary)" }}>Who is this for?</p>
+          <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 10px", color: "var(--color-text-primary)" }}>Who is this for?</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: "1.5rem" }}>
             {AUDIENCES.map(({ key, label, ages, desc }) => {
               const disabled = !contentType;
@@ -1219,7 +1219,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
           </div>
 
           <div style={{ marginBottom: 8 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, margin: "0 0 2px", color: "var(--color-text-primary)" }}>Genre</p>
+            <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 2px", color: "var(--color-text-primary)" }}>What is your genre?</p>
             <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>Pick the closest match — even if your work blends genres or doesn't fit perfectly.</p>
           </div>
 
