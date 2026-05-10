@@ -499,14 +499,24 @@ Rules:
 - Return ONLY the JSON object. No markdown, no backticks, no preamble.`;
 }
 
+function normalizeQuotes(s) {
+  return s
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/—/g, '—')  // keep em-dash as-is for length safety
+    .replace(/–/g, '-');
+}
+
 function findQuotePos(text, quote) {
   if (!quote) return Infinity;
-  const exact = text.indexOf(quote);
+  const normText = normalizeQuotes(text);
+  const normQuote = normalizeQuotes(quote);
+  const exact = normText.indexOf(normQuote);
   if (exact !== -1) return exact;
-  const words = quote.trim().split(/\s+/);
+  const words = normQuote.trim().split(/\s+/);
   for (let len = words.length; len >= Math.max(3, Math.floor(words.length * 0.5)); len--) {
     const sub = words.slice(0, len).join(" ");
-    const idx = text.indexOf(sub);
+    const idx = normText.indexOf(sub);
     if (idx !== -1) return idx;
   }
   return Infinity;
@@ -519,18 +529,21 @@ function escapeHtml(s) {
 function buildHighlightedHTML(text, notes, activeTab, isDark = false) {
   const color = (isDark ? TAB_COLORS_DARK : TAB_COLORS)[activeTab];
   const ranges = [];
+  const normText = normalizeQuotes(text);
   (notes || []).forEach((n, i) => {
     if (!n.quote) return;
-    const idx = findQuotePos(text, n.quote);
-    const matchLen = text.indexOf(n.quote) !== -1 ? n.quote.length : (() => {
-      const words = n.quote.trim().split(/\s+/);
+    const normQuote = normalizeQuotes(n.quote);
+    let idx = normText.indexOf(normQuote);
+    let matchLen = idx !== -1 ? normQuote.length : 0;
+    if (idx === -1) {
+      const words = normQuote.trim().split(/\s+/);
       for (let len = words.length; len >= Math.max(3, Math.floor(words.length * 0.5)); len--) {
         const sub = words.slice(0, len).join(" ");
-        if (text.indexOf(sub) !== -1) return sub.length;
+        const subIdx = normText.indexOf(sub);
+        if (subIdx !== -1) { idx = subIdx; matchLen = sub.length; break; }
       }
-      return 0;
-    })();
-    if (idx === Infinity || matchLen === 0) return;
+    }
+    if (idx === -1 || idx === Infinity || matchLen === 0) return;
     ranges.push({ start: idx, end: idx + matchLen, noteIdx: i });
   });
   ranges.sort((a, b) => a.start - b.start);
@@ -583,20 +596,21 @@ function buildPDFHighlightHTML(text, feedback) {
   const ranges = [];
   TAB_KEYS.forEach(key => {
     const c = TAB_COLORS[key];
+    const normText = normalizeQuotes(text);
     (feedback?.[key]?.notes || []).forEach(n => {
       if (!n.quote) return;
-      const idx = findQuotePos(text, n.quote);
-      if (idx === Infinity) return;
-      const exact = text.indexOf(n.quote);
-      const matchLen = exact !== -1 ? n.quote.length : (() => {
-        const words = n.quote.trim().split(/\s+/);
+      const normQuote = normalizeQuotes(n.quote);
+      let idx = normText.indexOf(normQuote);
+      let matchLen = idx !== -1 ? normQuote.length : 0;
+      if (idx === -1) {
+        const words = normQuote.trim().split(/\s+/);
         for (let len = words.length; len >= Math.max(3, Math.floor(words.length * 0.5)); len--) {
           const sub = words.slice(0, len).join(" ");
-          if (text.indexOf(sub) !== -1) return sub.length;
+          const subIdx = normText.indexOf(sub);
+          if (subIdx !== -1) { idx = subIdx; matchLen = sub.length; break; }
         }
-        return 0;
-      })();
-      if (matchLen === 0) return;
+      }
+      if (idx === -1 || matchLen === 0) return;
       ranges.push({ start: idx, end: idx + matchLen, bg: c.bg, border: c.border });
     });
   });
