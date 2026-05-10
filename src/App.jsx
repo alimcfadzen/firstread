@@ -1434,6 +1434,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
           </div>
           {!feedback
             ? <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Write or paste your story excerpt here..."
+                onKeyDown={e => { if ((e.metaKey || e.ctrlKey) && e.key === "a") { e.preventDefault(); e.target.select(); } }}
                 style={{ width: "100%", height: 500, resize: "none", fontSize: 14, lineHeight: 1.75, boxSizing: "border-box", padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-primary)", fontFamily: "var(--font-sans)" }} />
             : <div ref={previewRef} key={tabKey}
                 onScroll={handlePreviewScroll}
