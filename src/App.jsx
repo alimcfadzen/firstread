@@ -1426,7 +1426,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
         <div>
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12, height: 31 }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
             <button onClick={analyze} disabled={loading || !text.trim()}
               style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
               {loading ? "Analyzing..." : feedback ? "Re-analyze →" : "Analyze →"}
@@ -1476,9 +1476,8 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             </div>
           </div>
 
-          <div style={{ position: "relative" }}>
           <div ref={feedbackRef} onScroll={handleFeedbackScroll}
-            style={{ height: 500, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, border: "0.5px solid var(--color-border-secondary)", borderRadius: "var(--border-radius-md)", padding: "10px 12px 48px" }}>
+            style={{ height: 500, overflowY: "auto", display: "flex", flexDirection: "column", gap: 10, border: "0.5px solid var(--color-border-secondary)", borderRadius: "var(--border-radius-md)", padding: "10px 12px" }}>
             {!feedback && !loading && <p style={{ color: "var(--color-text-tertiary)", fontSize: 13, margin: 0 }}>Feedback will appear here after analysis.</p>}
             {loading && <BookLoader />}
 
@@ -1556,10 +1555,11 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             })}
           </div>
           {feedback && (
-            <button onClick={downloadPDF} style={{ position: "absolute", bottom: 8, right: 8, fontSize: 12, fontWeight: 500, color: "#b10125", background: "var(--color-background-primary)", border: "1.5px solid #b10125", borderRadius: "var(--border-radius-md)", cursor: "pointer", padding: "5px 12px", fontFamily: "inherit" }}>Download PDF</button>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
+              <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: 0 }}>Scroll either panel to sync highlights</p>
+              <button onClick={downloadPDF} style={{ fontSize: 12, fontWeight: 500, color: "#b10125", background: "var(--color-background-primary)", border: "1.5px solid #b10125", borderRadius: "var(--border-radius-md)", cursor: "pointer", padding: "5px 12px", fontFamily: "inherit" }}>Download PDF</button>
+            </div>
           )}
-          </div>
-          {feedback && <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "6px 0 0" }}>Scroll either panel to sync highlights</p>}
         </div>
       </div>
 
