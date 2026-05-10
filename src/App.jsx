@@ -467,7 +467,7 @@ Non-fiction editorial priorities:
 
 Analyse the provided excerpt and return ONLY a valid JSON object:
 {
-  "prose":      { "summary": "2-3 sentence honest umbrella overview of the prose.", "notes": [ { "quote": "verbatim phrase or null", "positive": "specific genuine praise or null", "issue": "the problem and its effect on the reader — always present", "suggestion": "concrete fix with brief example rewrite where helpful" } ] },
+  "prose":      { "summary": "2-3 sentence honest umbrella overview of the prose.", "notes": [ { "quote": "verbatim phrase or null", "positive": "specific genuine praise or null", "issue": "the problem and its effect on the reader — always present", "suggestion": "guidance using the author's own phrasing where possible; minor fixes show the minimal change inline; significant structural issues offer one fresh contrast sentence illustrating the principle only" } ] },
   "characters": { "summary": "2-3 sentence overview of voice, persona, and how people/subjects are rendered on the page.", "notes": [ { "quote": "verbatim phrase or null", "positive": "or null", "issue": "always present", "suggestion": "always present" } ] },
   "plot":       { "summary": "2-3 sentence overview of structure, argument, and pacing.", "notes": [ { "quote": "verbatim phrase or null", "positive": "or null", "issue": "always present", "suggestion": "always present" } ] }
 }
@@ -476,7 +476,7 @@ Rules:
 - quote: exact verbatim substring from the excerpt, or null. Never paraphrase.
 - positive: specific genuine praise only, null if nothing stands out.
 - issue: always present. Name the problem and its effect on the reader.
-- suggestion: always present. Actionable, with example rewrite where helpful.
+- suggestion: always present. Stay in the author's voice — work with their phrasing, not against it. For minor issues (word choice, rhythm, small restructures) show the minimal adjustment using their own words. For significant structural problems, write one short fresh sentence that illustrates the principle as a contrast — do not rewrite their actual sentence. Never produce a full rewrite.
 - Sort notes so quotes appear in the order they occur in the text. Null-quote notes go last.
 - Return ONLY the JSON object. No markdown, no backticks, no preamble.`;
   }
@@ -487,7 +487,7 @@ ${toneGuide}${scopeInstruction}
 
 Analyse the provided story excerpt and return ONLY a valid JSON object:
 {
-  "prose":      { "summary": "2-3 sentence honest umbrella overview of the prose.", "notes": [ { "quote": "verbatim phrase or null", "positive": "specific genuine praise or null", "issue": "the problem and its effect on the reader — always present", "suggestion": "concrete fix with brief example rewrite where helpful" } ] },
+  "prose":      { "summary": "2-3 sentence honest umbrella overview of the prose.", "notes": [ { "quote": "verbatim phrase or null", "positive": "specific genuine praise or null", "issue": "the problem and its effect on the reader — always present", "suggestion": "guidance using the author's own phrasing where possible; minor fixes show the minimal change inline; significant structural issues offer one fresh contrast sentence illustrating the principle only" } ] },
   "characters": { "summary": "2-3 sentence honest umbrella overview of characterisation.", "notes": [ { "quote": "verbatim phrase or null", "positive": "or null", "issue": "always present", "suggestion": "always present" } ] },
   "plot":       { "summary": "2-3 sentence honest umbrella overview of plot and pacing.", "notes": [ { "quote": "verbatim phrase or null", "positive": "or null", "issue": "always present", "suggestion": "always present" } ] }
 }
@@ -496,7 +496,7 @@ Rules:
 - quote: exact verbatim substring from the excerpt, or null. Never paraphrase.
 - positive: specific genuine praise only, null if nothing stands out.
 - issue: always present. Name the problem and its effect on the reader.
-- suggestion: always present. Actionable, with example rewrite where helpful.
+- suggestion: always present. Stay in the author's voice — work with their phrasing, not against it. For minor issues (word choice, rhythm, small restructures) show the minimal adjustment using their own words. For significant structural problems, write one short fresh sentence that illustrates the principle as a contrast — do not rewrite their actual sentence. Never produce a full rewrite.
 - Sort notes so quotes appear in the order they occur in the text. Null-quote notes go last.
 - Return ONLY the JSON object. No markdown, no backticks, no preamble.`;
 }
