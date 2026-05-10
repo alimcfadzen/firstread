@@ -1396,7 +1396,13 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
-        <div style={{ paddingTop: 43 }}>
+        <div>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12, height: 31 }}>
+            <button onClick={analyze} disabled={loading || !text.trim()}
+              style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
+              {loading ? "Analyzing..." : feedback ? "Re-analyze →" : "Analyze →"}
+            </button>
+          </div>
           {!feedback
             ? <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Write or paste your story excerpt here..."
                 style={{ width: "100%", height: 500, resize: "none", fontSize: 14, lineHeight: 1.75, boxSizing: "border-box", padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-primary)", fontFamily: "var(--font-sans)" }} />
