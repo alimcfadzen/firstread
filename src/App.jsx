@@ -587,6 +587,7 @@ function BookLoader() {
           <div style={{ position: "absolute", left: "50%", top: 0, transform: "translateX(-50%)", width: 3, height: "100%", background: "#6b7280", zIndex: 10, borderRadius: 2 }} />
         </div>
         <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>Reading your excerpt...</span>
+        <span style={{ fontSize: 12, color: "var(--color-text-tertiary)", textAlign: "center", lineHeight: 1.5, maxWidth: 260 }}>This can take a few minutes depending on the length of your text and level of feedback requested.</span>
       </div>
     </>
   );
