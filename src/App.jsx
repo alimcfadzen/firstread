@@ -1474,10 +1474,18 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
                 ))}
               </div>
             ) : <span />}
-            <button onClick={analyze} disabled={loading || !text.trim()}
-              style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
-              {loading ? "Analyzing..." : feedback ? "Re-analyze →" : "Analyze →"}
-            </button>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              {feedback && !loading && (
+                <button onClick={() => { setFeedback(null); setChat([]); setActiveNote(null); setTextViewMode("edit"); }}
+                  style={{ padding: "7px 14px", fontSize: 13, fontWeight: 500, borderRadius: "var(--border-radius-md)", border: "1px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-secondary)", cursor: "pointer", fontFamily: "inherit" }}>
+                  Review updated text
+                </button>
+              )}
+              <button onClick={analyze} disabled={loading || !text.trim()}
+                style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
+                {loading ? "Analyzing..." : "Analyze →"}
+              </button>
+            </div>
           </div>
           {textViewMode === "highlights" && feedback
             ? <div ref={previewRef} key={tabKey}
@@ -1491,10 +1499,16 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
             <span style={{ fontSize: 12, color: "var(--color-text-tertiary)" }}>{wordCount} word{wordCount !== 1 ? "s" : ""}</span>
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8, marginTop: 8 }}>
+            {feedback && !loading && (
+              <button onClick={() => { setFeedback(null); setChat([]); setActiveNote(null); setTextViewMode("edit"); }}
+                style={{ padding: "7px 14px", fontSize: 13, fontWeight: 500, borderRadius: "var(--border-radius-md)", border: "1px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-secondary)", cursor: "pointer", fontFamily: "inherit" }}>
+                Review updated text
+              </button>
+            )}
             <button onClick={analyze} disabled={loading || !text.trim()}
               style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
-              {loading ? "Analyzing..." : feedback ? "Re-analyze →" : "Analyze →"}
+              {loading ? "Analyzing..." : "Analyze →"}
             </button>
           </div>
           {error && <p style={{ fontSize: 13, color: "var(--color-text-danger)", marginTop: 6 }}>{error}</p>}
