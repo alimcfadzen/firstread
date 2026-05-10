@@ -973,6 +973,20 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   const programmaticScrollRef = useRef(false);
   const [viewMode, setViewMode] = useState("cards");
 
+  // Browser back-button support for internal page navigation
+  useEffect(() => {
+    history.replaceState({ appPage: 'setup1' }, '');
+    const handlePopState = (e) => {
+      const appPage = e.state?.appPage;
+      if (appPage === 'editor') { setReady(true); }
+      else if (appPage === 'setup2') { setReady(false); setSetupPage(2); }
+      else if (appPage === 'setup1') { setReady(false); setSetupPage(1); }
+      else { window.location.hash = ''; }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
   const effectiveTab = feedbackScope !== "all" ? TAB_KEYS.indexOf(feedbackScope) : tab;
   const tabKey = TAB_KEYS[effectiveTab];
@@ -1172,7 +1186,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   if (!ready) return (
     <div style={{ fontFamily: "var(--font-sans)", padding: "1.5rem 0", color: "var(--color-text-primary)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Story Editor</h2>
+        <h2 style={{ fontSize: 18, fontWeight: 500, margin: 0, color: "#b10125" }}>Story Editor</h2>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
@@ -1302,7 +1316,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
           )}
 
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button onClick={() => genre && setSetupPage(2)} disabled={!genre}
+            <button onClick={() => { if (genre) { history.pushState({ appPage: 'setup2' }, ''); setSetupPage(2); } }} disabled={!genre}
               style={{ padding: "9px 28px", fontSize: 15, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", borderRadius: "var(--border-radius-md)", border: genre ? "2px solid #b10125" : "1px solid var(--setup-unselected-border)", background: genre ? "#b10125" : "var(--setup-disabled-bg)", color: genre ? "#ffffff" : "var(--setup-disabled-text)", cursor: genre ? "pointer" : "not-allowed", fontFamily: "inherit" }}>
               Continue →
             </button>
@@ -1351,12 +1365,12 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <button onClick={() => setSetupPage(1)}
+            <button onClick={() => history.back()}
               style={{ padding: "8px 14px", fontSize: 13, borderRadius: "var(--border-radius-md)", border: "1px solid var(--setup-unselected-border)", background: "var(--setup-unselected-bg)", color: "var(--color-text-primary)", cursor: "pointer", fontFamily: "inherit" }}>
               ← Back
             </button>
             {intensity && (
-              <button onClick={() => setReady(true)}
+              <button onClick={() => { history.pushState({ appPage: 'editor' }, ''); setReady(true); }}
                 style={{ padding: "9px 28px", fontSize: 15, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em", borderRadius: "var(--border-radius-md)", border: "2px solid #b10125", background: "#b10125", color: "#ffffff", cursor: "pointer", fontFamily: "inherit" }}>
                 Let's get editing →
               </button>
@@ -1372,7 +1386,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   return (
     <div style={{ fontFamily: "var(--font-sans)", padding: "1rem 0", color: "var(--color-text-primary)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-        <h2 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Story Editor</h2>
+        <h2 style={{ fontSize: 18, fontWeight: 500, margin: 0, color: "#b10125" }}>Story Editor</h2>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
