@@ -957,6 +957,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   const [setupPage, setSetupPage] = useState(1);
   const [ready, setReady] = useState(false);
   const [text, setText] = useState("");
+  const [textViewMode, setTextViewMode] = useState("edit");
   const [context, setContext] = useState("");
   const [showContext, setShowContext] = useState(false);
   const [tab, setTab] = useState(0);
@@ -1096,7 +1097,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
         if (parsed[key]?.notes)
           parsed[key].notes = [...parsed[key].notes].sort((a, b) => findQuotePos(text, a.quote) - findQuotePos(text, b.quote));
       }
-      setFeedback(parsed); setChat([]);
+      setFeedback(parsed); setChat([]); setTextViewMode("highlights");
       if (feedbackRef.current) feedbackRef.current.scrollTop = 0;
     } catch (e) { setError(`Error: ${e.message}`); }
     setLoading(false);
@@ -1426,24 +1427,33 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
         <div>
-          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            {feedback ? (
+              <div style={{ display: "flex", border: "0.5px solid var(--color-border-tertiary)", borderRadius: 6, overflow: "hidden" }}>
+                {[["edit", "Edit"], ["highlights", "Highlights"]].map(([mode, label]) => (
+                  <button key={mode} onClick={() => setTextViewMode(mode)}
+                    style={{ padding: "4px 12px", fontSize: 12, border: "none", cursor: "pointer", background: textViewMode === mode ? (theme === "dark" ? "#3a3a3a" : "#e5e7eb") : "transparent", color: textViewMode === mode ? "var(--color-text-primary)" : "var(--color-text-tertiary)", fontWeight: textViewMode === mode ? 500 : 400, fontFamily: "inherit" }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            ) : <span />}
             <button onClick={analyze} disabled={loading || !text.trim()}
               style={{ padding: "7px 18px", fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", borderRadius: "var(--border-radius-md)", border: !loading && text.trim() ? "1.5px solid #b10125" : "0.5px solid var(--color-border-secondary)", cursor: loading || !text.trim() ? "not-allowed" : "pointer", background: !loading && text.trim() ? "#b10125" : "var(--setup-disabled-bg)", color: !loading && text.trim() ? "#ffffff" : "var(--setup-disabled-text)", fontFamily: "inherit" }}>
               {loading ? "Analyzing..." : feedback ? "Re-analyze →" : "Analyze →"}
             </button>
           </div>
-          {!feedback
-            ? <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Write or paste your story excerpt here..."
-                onKeyDown={e => { if ((e.metaKey || e.ctrlKey) && e.key === "a") { e.preventDefault(); e.target.select(); } }}
-                style={{ width: "100%", height: 500, resize: "none", fontSize: 14, lineHeight: 1.75, boxSizing: "border-box", padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-primary)", fontFamily: "var(--font-sans)" }} />
-            : <div ref={previewRef} key={tabKey}
+          {textViewMode === "highlights" && feedback
+            ? <div ref={previewRef} key={tabKey}
                 onScroll={handlePreviewScroll}
                 style={{ height: 500, overflowY: "auto", fontSize: 14, lineHeight: 1.75, padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", wordBreak: "break-word" }}
                 dangerouslySetInnerHTML={buildHighlightedHTML(text, currentNotes, tabKey, theme === "dark")} />
+            : <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Write or paste your story excerpt here..."
+                onKeyDown={e => { if ((e.metaKey || e.ctrlKey) && e.key === "a") { e.preventDefault(); e.target.select(); } }}
+                style={{ width: "100%", height: 500, resize: "none", fontSize: 14, lineHeight: 1.75, boxSizing: "border-box", padding: "10px 12px", borderRadius: "var(--border-radius-md)", border: "0.5px solid var(--color-border-secondary)", background: "var(--color-background-primary)", color: "var(--color-text-primary)", fontFamily: "var(--font-sans)" }} />
           }
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
             <span style={{ fontSize: 12, color: "var(--color-text-tertiary)" }}>{wordCount} word{wordCount !== 1 ? "s" : ""}</span>
-            {feedback && <button onClick={() => { setFeedback(null); setActiveNote(null); }} style={{ fontSize: 12, color: "var(--color-text-secondary)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>Edit text</button>}
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
             <button onClick={analyze} disabled={loading || !text.trim()}
