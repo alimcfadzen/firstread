@@ -7,7 +7,7 @@ import App from "./App.jsx";
 
 function pageFromHash() {
   const hash = window.location.hash.slice(1);
-  if (hash === "app") return localStorage.getItem("story_editor_api_key") ? "app" : "landing";
+  if (hash === "app") return (import.meta.env.VITE_API_KEY || localStorage.getItem("story_editor_api_key")) ? "app" : "landing";
   if (hash === "setup") return "setup";
   if (hash === "privacy") return "privacy";
   if (hash === "terms") return "terms";

@@ -948,7 +948,7 @@ function ApiKeySetup({ onReady }) {
 }
 
 export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem("story_editor_api_key") || "__claude_ai__");
+  const [apiKey, setApiKey] = useState(() => import.meta.env.VITE_API_KEY || localStorage.getItem("story_editor_api_key") || "");
   const [contentType, setContentType] = useState(null);
   const [genre, setGenre] = useState(null);
   const [subgenre, setSubgenre] = useState(null);
@@ -1187,7 +1187,7 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
   const labelStyle = c => ({ fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.05em", color: c, display: "block", marginBottom: 3 });
   const blockStyle = (bg, border) => ({ fontSize: 13, lineHeight: 1.6, margin: 0, padding: "6px 10px", borderRadius: "8px", background: bg, borderLeft: `2px solid ${border}` });
 
-  if (!apiKey) return <ApiKeySetup onReady={k => setApiKey(k)} />;
+  if (!apiKey) return <div style={{ fontFamily: "var(--font-sans)", padding: "2rem", color: "var(--color-text-primary)" }}>No API key configured. Set <code>VITE_API_KEY</code> and rebuild.</div>;
 
   if (!ready) return (
     <div style={{ fontFamily: "var(--font-sans)", padding: "1.5rem 0", color: "var(--color-text-primary)" }}>
@@ -1200,20 +1200,12 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             style={{ border: "1px solid var(--color-border-secondary)", borderRadius: 7, width: 32, height: 32, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", background: "none", color: "var(--color-text-primary)", fontSize: 14, flexShrink: 0 }}>
             {theme === "dark" ? "☀" : "☽"}
           </button>
-          {apiKey !== "__claude_ai__" && (
-            <button onClick={() => { localStorage.removeItem("story_editor_api_key"); setApiKey(""); }}
-              style={{ fontSize: 12, color: "var(--color-text-tertiary)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-              API key ×
-            </button>
-          )}
         </div>
       </div>
       <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: "0 0 1.5rem" }}>Set your preferences before you begin.</p>
 
       {setupPage === 1 && (
         <>
-          {apiKey === "__claude_ai__" && <ApiKeyBanner onReady={k => setApiKey(k)} />}
-
           <p style={{ fontSize: 14, fontWeight: 700, margin: "0 0 10px", color: "var(--color-text-primary)" }}>What are you working on?</p>
           <div style={{ display: "flex", gap: 8, marginBottom: "1.5rem" }}>
             {[
@@ -1429,10 +1421,6 @@ export default function StoryEditor({ theme = "light", setTheme = () => {} }) {
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             style={{ border: "1px solid var(--color-border-secondary)", borderRadius: 7, width: 32, height: 32, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", background: "none", color: "var(--color-text-primary)", fontSize: 14, flexShrink: 0 }}>
             {theme === "dark" ? "☀" : "☽"}
-          </button>
-          <button onClick={() => { localStorage.removeItem("story_editor_api_key"); setApiKey(""); }}
-            style={{ fontSize: 12, color: "var(--color-text-tertiary)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-            API key ×
           </button>
         </div>
       </div>
