@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "export": "vite build && cp dist/index.html firstread.html",
     "lint": "eslint .",
     "preview": "vite preview"
   },
